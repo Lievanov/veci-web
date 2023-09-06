@@ -1,3 +1,33 @@
+<script setup>
+// import { DASHBOARDMEMBERURL } from '../composables/constants';
+
+const client = useSupabaseClient();
+const user = useSupabaseUser();
+const router = useRouter();
+
+const showBanner = ref(false);
+const username = ref("");
+const password = ref("");
+
+onMounted(() => {
+  if (user.id) router.push("/dashboard");
+});
+
+const submit = async () => {
+  showBanner.value = false;
+  const { data, error } = await client.auth.signInWithPassword({
+    email: username.value,
+    password: password.value,
+  });
+  if (error) {
+    showBanner.value = true;
+    return;
+  }
+  router.push("/dashboard");
+  // router.push(DASHBOARDMEMBERURL);
+};
+</script>
+
 <template>
   <div>
     <p>Bienvenido al Veci</p>
@@ -31,33 +61,3 @@
     </form>
   </div>
 </template>
-
-<script setup>
-// import { DASHBOARDMEMBERURL } from '../composables/constants';
-
-const client = useSupabaseClient();
-const user = useSupabaseUser();
-const router = useRouter();
-
-const showBanner = ref(false);
-const username = ref('');
-const password = ref('');
-
-onMounted(() => {
-  if (user.id) router.push('/dashboard');
-});
-
-const submit = async () => {
-  showBanner.value = false;
-  const { data, error } = await client.auth.signInWithPassword({
-    email: username.value,
-    password: password.value,
-  });
-  if (error) {
-    showBanner.value = true;
-    return;
-  }
-  router.push('/dashboard');
-  // router.push(DASHBOARDMEMBERURL);
-};
-</script>

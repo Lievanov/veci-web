@@ -53,12 +53,12 @@ const client = useSupabaseClient();
 const user = useSupabaseUser();
 const router = useRouter();
 
-const username = ref('');
-const password = ref('');
+const username = ref("");
+const password = ref("");
 const hasSuccessRegistration = ref(false);
 
 onMounted(() => {
-  if (user.id) router.push('/dashboard');
+  if (user.id) router.push("/dashboard");
 });
 
 const submit = async () => {
@@ -71,6 +71,7 @@ const submit = async () => {
     return alert(error);
   }
   if (data.user.id) {
+    await db.profiles.createProfile(client, data.user.id);
     hasSuccessRegistration.value = true;
   }
 };

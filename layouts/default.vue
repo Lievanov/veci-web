@@ -1,3 +1,3 @@
 <template>
-  <div>template default layout</div>
+  <slot />
 </template>
